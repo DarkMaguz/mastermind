@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:8
+#    command: --default-authentication-plugin=mysql_native_password
+#    restart: always
+    volumes:
+      - mysql:/var/lib/mysql
+    environment:
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+      - MYSQL_DATABASE=nodejs_app
+      - MYSQL_USER=nodejs
+      - MYSQL_PASSWORD=nodejs
+
+  adminer:
+    image: adminer:4
+    depends_on:
+      - db
+#    restart: always
+    ports:
+      - 8080:8080
+
+  app:
+    image: node:16
+    depends_on:
+      - db
+    command: npm run start
+#    restart: always
+    volumes:
+      - ./:/usr/app/
+    ports:
+      - 8040:8040
+      - 5858:5858
+    working_dir: /usr/app
+    environment:
+      - NODE_ENV=development
+
+volumes:
+  mysql:
