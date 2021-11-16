@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   entry: "./src/index.tsx",
-  output: { path: path.join(__dirname, "build"), filename: "index.bundle.js" },
+  output: { path: path.join(__dirname, "/dist"), filename: "index.bundle.js" },
   mode: process.env.NODE_ENV || "development",
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
@@ -13,10 +13,10 @@ module.exports = {
     host: '0.0.0.0',
     port: 8040,
     hot: true,
-    watchOptions: {
-      aggregateTimeout: 500, // delay before reloading
-      poll: 1000 // enable polling since fsevents are not supported in docker
-    }
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
+    compress: true,
   },
   module: {
     rules: [
